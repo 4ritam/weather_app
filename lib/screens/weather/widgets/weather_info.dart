@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class WeatherInfo extends StatelessWidget {
-  final String weatherCondition;
-  final IconData icon;
-  final String temperature;
+  final String? weatherCondition;
+  final String? icon;
+  final double? temperature;
   const WeatherInfo({
     super.key,
     required this.weatherCondition,
@@ -17,23 +17,18 @@ class WeatherInfo extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Icon(
-            icon,
-            size: 48,
-            shadows: const [
-              Shadow(
-                blurRadius: 8.0,
-                color: Colors.black54,
-                offset: Offset(
-                  1.0,
-                  2.0,
-                ),
-              ),
-            ],
-          ),
+          child: icon != null
+              ? Image.network(
+                  icon!,
+                  height: 64,
+                  width: 64,
+                  cacheHeight: 64,
+                  cacheWidth: 64,
+                )
+              : const CircularProgressIndicator(),
         ),
         Text(
-          weatherCondition,
+          weatherCondition != null ? weatherCondition! : "------",
           style: const TextStyle(
             fontSize: 40,
             fontWeight: FontWeight.bold,
@@ -54,7 +49,7 @@ class WeatherInfo extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              temperature,
+              temperature != null ? temperature!.round().toString() : "--",
               style: const TextStyle(
                 fontSize: 90,
                 fontWeight: FontWeight.w500,

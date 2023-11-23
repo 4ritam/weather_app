@@ -1,11 +1,11 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DailyForecastItem extends StatelessWidget {
   final DateTime day;
-  final IconData icon;
-  final int temperature;
+  final String icon;
+  final double temperature;
   final double wind;
   const DailyForecastItem({
     Key? key,
@@ -22,12 +22,11 @@ class DailyForecastItem extends StatelessWidget {
       children: [
         Text(DateFormat("E d").format(day)),
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Icon(
-            icon,
-            size: 40,
-          ),
-        ),
+            padding: const EdgeInsets.all(8.0),
+            child: Image.network(
+              icon,
+              height: 48,
+            )),
         Text(
           "$temperature°",
           style: const TextStyle(
