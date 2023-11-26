@@ -10,18 +10,16 @@ class WeatherScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    WeatherModel? data;
-
-    ref.watch(weatherProvider).when(
-          data: (WeatherModel d) {
-            data = d;
+    WeatherModel? _data;
+    ref.watch(weatherDataStreamProvider).when(
+          data: (data) {
+            _data = data;
           },
-          error: (error, stacktrace) {},
+          error: (error, stackTrace) {},
           loading: () {
-            data = null;
+            _data = null;
           },
         );
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.cyanAccent,
@@ -42,7 +40,7 @@ class WeatherScreen extends ConsumerWidget {
               const SizedBox(
                 width: 8,
               ),
-              data != null ? Text(data!.location!) : const Text("Loading"),
+              _data != null ? Text(_data!.location!) : const Text("Loading"),
             ],
           ),
         ),
@@ -57,7 +55,7 @@ class WeatherScreen extends ConsumerWidget {
                   child: Column(
                     children: [
                       Text(
-                        data != null
+                        _data != null
                             ? DateFormat('MMM d, E').format(DateTime.now())
                             : "--- --, ---",
                         style: const TextStyle(
@@ -76,8 +74,8 @@ class WeatherScreen extends ConsumerWidget {
                         ),
                       ),
                       Text(
-                        data != null
-                            ? "Updated ${DateFormat('d/M/yyy h:mm a').format(data!.lastUpdated!)}"
+                        _data != null
+                            ? "Updated ${DateFormat('d/M/yyy h:mm a').format(_data!.lastUpdated!)}"
                             : "Updated --/--/-- --:-- --",
                         style: const TextStyle(
                           shadows: [
@@ -104,9 +102,9 @@ class WeatherScreen extends ConsumerWidget {
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: WeatherInfo(
-                    weatherCondition: data != null ? data!.condition! : null,
-                    icon: data != null ? data!.conditionImage! : null,
-                    temperature: data != null ? data!.temp! : null,
+                    weatherCondition: _data != null ? _data!.condition! : null,
+                    icon: _data != null ? _data!.conditionImage! : null,
+                    temperature: _data != null ? _data!.temp! : null,
                   ),
                 ),
               ),
@@ -121,7 +119,8 @@ class WeatherScreen extends ConsumerWidget {
                   AdditionalInfoItem(
                     context: context,
                     info: "Humidity",
-                    data: "${data != null ? data!.humidity.toString() : "--"}%",
+                    data:
+                        "${_data != null ? _data!.humidity.toString() : "--"}%",
                     icon: Icons.water_drop_outlined,
                   ),
                   const Spacer(
@@ -130,7 +129,8 @@ class WeatherScreen extends ConsumerWidget {
                   AdditionalInfoItem(
                     context: context,
                     info: "Wind",
-                    data: "${data != null ? data!.wind.toString() : "--"}km/h",
+                    data:
+                        "${_data != null ? _data!.wind.toString() : "--"}km/h",
                     icon: Icons.wind_power_outlined,
                   ),
                   const Spacer(
@@ -140,7 +140,7 @@ class WeatherScreen extends ConsumerWidget {
                     context: context,
                     info: "Feels Like",
                     data:
-                        "${data != null ? data!.feelsLike!.round().toString() : "--"}°C",
+                        "${_data != null ? _data!.feelsLike!.round().toString() : "--"}°C",
                     icon: Icons.thermostat,
                   ),
                   const Spacer(
@@ -159,11 +159,11 @@ class WeatherScreen extends ConsumerWidget {
                 color: const Color.fromARGB(59, 41, 41, 41),
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: data != null
+                  child: _data != null
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: data!.forecast!.map((e) {
+                          children: _data!.forecast!.map((e) {
                             return SizedBox(
                               width: MediaQuery.of(context).size.width / 6,
                               child: FittedBox(

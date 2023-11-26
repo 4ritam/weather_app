@@ -19,4 +19,24 @@ class WeatherRepository {
     return weatherService.getCurrentWeather(loc);
   }
 
+  Stream<WeatherModel> weatherDataStream(String loc) async* {
+    while (true) {
+      WeatherModel data = await getWeatherData(loc);
+      yield data;
+      await Future.delayed(const Duration(seconds: 15));
+    }
+  }
+
+  Stream<List<WeatherModel>> weatherListDataStream(
+      List<String> locList) async* {
+    while (true) {
+      List<WeatherModel> result = [];
+      for (String loc in locList) {
+        WeatherModel data = await getWeatherData(loc);
+        result.add(data);
+      }
+      yield result;
+      await Future.delayed(const Duration(seconds: 15));
+    }
+  }
 }

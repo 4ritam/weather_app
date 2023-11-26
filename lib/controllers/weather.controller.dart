@@ -6,24 +6,33 @@ import 'package:weather_app/repositories/weather.repositories.dart';
 
 final weatherControllerProvider = Provider<WeatherController>(
   (ref) => WeatherController(
-    repository: ref.read(weatherRepositoryProvider),
+    repository: ref.watch(weatherRepositoryProvider),
   ),
 );
 
-final weatherProvider = FutureProvider((ref) {
-  return ref.read(weatherControllerProvider).getWeather();
-});
+final weatherDataStreamProvider =
+    StreamProvider((ref) => ref.watch(weatherControllerProvider).getWeather());
+
+final weatherDataListStreamProvider = StreamProvider(
+    (ref) => ref.watch(weatherControllerProvider).getWeatherList());
 
 class WeatherController {
   final WeatherRepository _repository;
 
-  final String _defaultLocation = "Agartala";
+  final int _defaultLocation = 0;
+  final List<String> _locations = ["Agartala"];
 
   WeatherController({
     required WeatherRepository repository,
   }) : _repository = repository;
 
-  Future<WeatherModel> getWeather() {
-    return _repository.getWeatherData(_defaultLocation);
+  List<String> get location => _locations;
+
+  Stream<WeatherModel> getWeather() {
+    return _repository.weatherDataStream(_locations[_defaultLocation]);
+  }
+
+  Stream<List<WeatherModel>> getWeatherList() {
+    return _repository.weatherListDataStream(_locations);
   }
 }

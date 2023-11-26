@@ -13,7 +13,6 @@ class WeatherService {
         '$baseURL?q=$location&days=4&hour=0&alerts=no&aqi=no&key=$apiKey'));
     if (response.statusCode == 200) {
       final res = WeatherModel.fromMap(jsonDecode(response.body));
-      print(res.conditionImage);
       return res;
     } else {
       throw Exception("failed to load weather data.");

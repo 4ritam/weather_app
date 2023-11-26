@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/screens/weather/weather.screen.dart';
+import 'package:weather_app/screens/location_list/location_list.screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
@@ -16,9 +16,10 @@ class MainApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         primaryColorDark: Colors.white,
       ),
+      themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
       title: "Weather App",
-      home: const WeatherScreen(),
+      home: const LocationListScreen(),
     );
   }
 }
